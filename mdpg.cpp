@@ -19,12 +19,12 @@ std::vector< std::vector<int> > read_graph()
 	
 	// le arestas
 	std::cout << std::endl << "informe 3 valores para cada par de pessoas - pessoa a, pessoa b e a diversidade entre elas:" << std::endl;
-	for ( int i = 0; i < num_arch; i++ )			// O(n*n)
+	for ( int i = 0; i < num_arch; i++ )			// O(n^2)
 	{
 		int a, b, diversity;
 		std::cout << "> ";
 		std::cin >> a >> b >> diversity;
-		graph[a][b] = diversity;
+		graph[a][b] = graph[b][a] = diversity;
 	}
 	
 	return graph;
