@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	// le arestas
 	for ( int i = 0; i < num_arch; i++ )			// O(n^2)
 	{
-		int a, b, diversity;
+		float a, b, diversity;
 		input >> a >> b >> diversity;
 		graph[a][b] = diversity;
 		graph[b][a] = diversity;
