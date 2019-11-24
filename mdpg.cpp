@@ -6,6 +6,8 @@
 
 int main(int argc, char *argv[])
 {	
+	clock_t begin = clock();
+
 	srand(atoi(argv[2]) );
 	std::ifstream input;
 	input.open(argv[1]);
@@ -51,6 +53,10 @@ int main(int argc, char *argv[])
 	best_solution = grasp( graph, group_min_sizes, group_max_sizes );
 	
 	std::cout << std::endl << "melhor solucao encontrada: " << best_solution << std::endl;
+	
+	clock_t end = clock();
+	double elapsed_seconds = double( end - begin ) / CLOCKS_PER_SEC;
+	std::cout << std::endl << "tempo de execucao em segundos: " << elapsed_seconds << std::endl;
 	
 	return 0;
 }

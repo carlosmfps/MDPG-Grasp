@@ -15,6 +15,7 @@ int grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> group
 	std::vector< std::vector<int> > solution = build_initial_solution( graph, available_nodes, group_min_sizes, group_max_sizes );
 	std::cout << std::endl << "solucao inicial:" << std::endl;
 	print_solution( solution );
+	std::cout << "valor: " << calculate_z( solution, graph, num_groups, num_nodes ) << std::endl;
 		
 	// busca local
 	for ( int i = 0; i < MAX_ITERATIONS; i++ )
@@ -44,6 +45,14 @@ int grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> group
 			}
 		}
 		solution = best_local_solution;
+	}
+	
+	std::cout << std::endl << "solucao final encontrada:" << std::endl;
+	for ( int i = 0; i < num_groups; i++ )
+	{
+		for ( int j = 0; j < num_nodes; j++ )
+			std::cout << solution[i][j] << "\t";
+		std::cout << std::endl;
 	}
 
 	return calculate_z( solution, graph, num_groups, num_nodes );
@@ -91,13 +100,18 @@ std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vec
 	
 	for ( int i = 0; i < num_groups; i++ )
 	{
-		int k = group_min_sizes[i];
+		int k = group_max_sizes[i];
+
 		std::vector<int> rcl = build_restricted_candidate_list( k, instance, available_nodes );
 		
 		for ( int j = 0; j < group_min_sizes[i]; j++ )
 		{
-			solution[i][rcl[j]] = 1;
-			available_nodes[rcl[j]] = false;
+			int person = rand() % rcl.size();
+			while ( solution[i][rcl[person]] == 1 )
+				person = rand() % rcl.size();
+			
+			solution[i][rcl[person]] = 1;
+			available_nodes[rcl[person]] = false;
 		}
 	}
 	
