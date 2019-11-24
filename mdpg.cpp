@@ -16,7 +16,7 @@ std::vector< std::vector<int> > read_graph()
 	std::fill( column.begin(), column.end(), 0 );
 	for ( int i = 0; i < num_vertex; i++ )		// O(n)
 		graph.push_back( column );
-	
+
 	// le arestas
 	std::cout << std::endl << "informe 3 valores para cada par de pessoas - pessoa a, pessoa b e a diversidade entre elas:" << std::endl;
 	for ( int i = 0; i < num_arch; i++ )			// O(n^2)

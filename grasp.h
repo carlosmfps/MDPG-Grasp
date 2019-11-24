@@ -16,4 +16,8 @@ int grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> group
 
 int calculate_z( std::vector< std::vector<int> > solution, Graph instance, int num_groups, int num_nodes );
 
+std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vector<bool>& available_nodes, std::vector<int> group_min_sizes );
+
+void print_solution( std::vector< std::vector<int> > solution );
+
 std::vector<int> build_restricted_candidate_list( int k, Graph instance, std::vector<bool>& available_nodes );
