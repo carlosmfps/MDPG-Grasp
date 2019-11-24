@@ -18,6 +18,7 @@ int grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> group
 	for ( int i = 0; i < MAX_ITERATIONS; i++ )
 	{
 		std::vector< std::vector<int> > neighbor;
+		neighbor = build_neighbor( graph, group_min_sizes, group_max_sizes, solution );
 		
 		
 	}
@@ -78,6 +79,11 @@ std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vec
 	}
 	
 	return solution;
+}
+
+std::vector< std::vector<int> > build_neighbor( Graph instance, std::vector<int> group_min_sizes, std::vector<int> group_max_sizes, std::vector< std::vector<int> > solution )
+{
+	
 }
 
 void print_solution( std::vector< std::vector<int> > solution )

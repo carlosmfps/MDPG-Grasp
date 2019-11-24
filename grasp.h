@@ -18,6 +18,8 @@ int calculate_z( std::vector< std::vector<int> > solution, Graph instance, int n
 
 std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vector<bool>& available_nodes, std::vector<int> group_min_sizes );
 
+std::vector< std::vector<int> > build_neighbor( Graph instance, std::vector<int> group_min_sizes, std::vector<int> group_max_sizes, std::vector< std::vector<int> > solution );
+
 void print_solution( std::vector< std::vector<int> > solution );
 
 std::vector<int> build_restricted_candidate_list( int k, Graph instance, std::vector<bool>& available_nodes );
