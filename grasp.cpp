@@ -129,7 +129,7 @@ std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vec
 	return solution;
 }
 
-std::vector< std::vector<int> > build_neighbor( int person_a, int person_b, std::vector< std::vector<int> > solution )
+int find_person_p_group( std::vector< std::vector<int> > solution, int p )
 {
 	for ( int i = 0; i < solution.size(); i++ )
 	{
