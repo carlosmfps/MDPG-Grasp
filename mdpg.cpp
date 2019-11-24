@@ -33,9 +33,7 @@ std::vector< std::vector<int> > read_graph()
 void read_group_sizes( std::vector<int>& group_min_sizes, std::vector<int>& group_max_sizes )
 {
 	int num_groups;
-	
-	srand( time( NULL ) );
-	
+		
 	std::cout << std::endl << "informe o numero de grupos:" << std::endl << "> ";
 	std::cin >> num_groups;
 	
@@ -54,6 +52,8 @@ void read_group_sizes( std::vector<int>& group_min_sizes, std::vector<int>& grou
 
 int main()
 {
+	srand( time( NULL ) );
+	
 	int best_solution;
 	std::vector< std::vector<int> > graph;
 	std::vector<int> group_min_sizes, group_max_sizes;
