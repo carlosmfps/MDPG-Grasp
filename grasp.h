@@ -6,6 +6,7 @@
 #include <climits>
 
 #define MAX_ITERATIONS 20
+#define MAX_NEIGHBOR 20
 
 typedef std::vector< std::vector<int> > Graph;
 
