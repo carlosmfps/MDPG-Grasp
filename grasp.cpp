@@ -1,18 +1,18 @@
 #include "grasp.h"
 
-std::vector<int> nodes_si;
-std::vector<int> diversities;
+std::vector<float> nodes_si;
+std::vector<float> diversities;
 
-int grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> group_max_sizes )
+float grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> group_max_sizes )
 {	
 	int best_cost_solution = 0;
 	int num_groups = group_max_sizes.size();
 	int num_nodes = graph.size();
 	int person_a, person_b, a_group, b_group;
 	std::vector<bool> available_nodes( num_nodes, true );
-
+	
 	// fase de construcao - nao garante que a solucao factivel seja localmente otima
-	std::vector< std::vector<float> > solution = build_initial_solution( graph, available_nodes, group_min_sizes, group_max_sizes );
+	std::vector< std::vector<int> > solution = build_initial_solution( graph, available_nodes, group_min_sizes, group_max_sizes );
 	std::cout << std::endl << "solucao inicial:" << std::endl;
 	print_solution( solution );
 	std::cout << "valor: " << calculate_z( solution, graph, num_groups, num_nodes ) << std::endl;
@@ -20,11 +20,11 @@ int grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> group
 	// busca local
 	for ( int i = 0; i < MAX_ITERATIONS; i++ )
 	{	
-		std::vector< std::vector<float> > best_local_solution = solution;
+		std::vector< std::vector<int> > best_local_solution = solution;
 
 		for( int j = 0; j< MAX_NEIGHBOR; j++ )
 		{
-			std::vector< std::vector<float> > neighbor;			
+			std::vector< std::vector<int> > neighbor;			
 			do
 			{
 				person_a = rand() % num_nodes;
@@ -58,7 +58,7 @@ int grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> group
 	return calculate_z( solution, graph, num_groups, num_nodes );
 }
 
-float calculate_z( std::vector< std::vector<float> > solution, Graph instance, int num_groups, int num_nodes )
+float calculate_z( std::vector< std::vector<int> > solution, Graph instance, int num_groups, int num_nodes )
 {
 	int z = 0;
 	for ( int group = 0; group < num_groups; group++ )		// O( m*n^2 ) -> O(n^3)
@@ -84,37 +84,39 @@ float calculate_z( std::vector< std::vector<float> > solution, Graph instance, i
 	return z;
 }
 
-std::vector< std::vector<float> > build_initial_solution( Graph instance, std::vector<bool>& available_nodes, std::vector<int> group_min_sizes, std::vector<int> group_max_sizes )
+std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vector<bool>& available_nodes, std::vector<int> group_min_sizes, std::vector<int> group_max_sizes )
 {
-	std::vector< std::vector<float> > solution;
+	std::vector< std::vector<int> > solution;
 	int num_groups = group_min_sizes.size();
 	int num_nodes = instance.size();
 	
 	for ( int i = 0; i < num_groups; i++ )
 	{
-		std::vector<float> row;
+		std::vector<int> row;
 		for ( int j = 0; j < num_nodes; j++ )
 			row.push_back( 0 );
 		solution.push_back( row );
 	}
-	
+	std::cout << "TESTE 1\n";
 	for ( int i = 0; i < num_groups; i++ )
 	{
 		int k = group_max_sizes[i];
 
 		std::vector<int> rcl = build_restricted_candidate_list( k, instance, available_nodes );
-		
+		std::cout << "TESTE 1.1\n";
 		for ( int j = 0; j < group_min_sizes[i]; j++ )
 		{
-			int person = rand() % rcl.size();
-			while ( solution[i][rcl[person]] == 1 )
-				person = rand() % rcl.size();
+			if ( rcl.size() > 0 )
+			{
+				int person = rand() % rcl.size();
 			
-			solution[i][rcl[person]] = 1;
-			available_nodes[rcl[person]] = false;
+				solution[i][rcl[person]] = 1;
+				available_nodes[rcl[person]] = false;
+				rcl.erase( rcl.begin() + person );
+			}
 		}
 	}
-	
+	std::cout << "TESTE 2\n";
 	for ( int i = 0; i < num_groups; i++ )
 	{
 		// conta o numero de pessoas no grupo
@@ -142,7 +144,7 @@ std::vector< std::vector<float> > build_initial_solution( Graph instance, std::v
 	return solution;
 }
 
-int find_person_p_group( std::vector< std::vector<float> > solution, int p )
+int find_person_p_group( std::vector< std::vector<int> > solution, int p )
 {
 	for ( int i = 0; i < solution.size(); i++ )
 	{
@@ -153,9 +155,9 @@ int find_person_p_group( std::vector< std::vector<float> > solution, int p )
 	return -1;
 }
 
-std::vector< std::vector<float> > build_neighbor( int person_a, int person_b, std::vector< std::vector<float> > solution )
+std::vector< std::vector<int> > build_neighbor( int person_a, int person_b, std::vector< std::vector<int> > solution )
 {
-	std::vector< std::vector<float> > neighbor = solution;
+	std::vector< std::vector<int> > neighbor = solution;
 	int num_groups = solution.size();
 	int person_a_group, person_b_group;
 	
@@ -178,7 +180,7 @@ std::vector< std::vector<float> > build_neighbor( int person_a, int person_b, st
 	return neighbor;
 }
 
-void print_solution( std::vector< std::vector<float> > solution )
+void print_solution( std::vector< std::vector<int> > solution )
 {
 	for ( int i = 0; i < solution.size(); i++ )
 	{
