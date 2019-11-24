@@ -7,7 +7,7 @@
 #include <time.h>
 
 #define MAX_ITERATIONS 2500
-#define MAX_NEIGHBOR 20
+#define MAX_NEIGHBOR 250
 
 typedef std::vector< std::vector<float> > Graph;
 

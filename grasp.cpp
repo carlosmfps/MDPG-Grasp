@@ -103,7 +103,7 @@ std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vec
 		int k = group_max_sizes[i];
 
 		std::vector<int> rcl = build_restricted_candidate_list( k, instance, available_nodes );
-		std::cout << "TESTE 1.1\n";
+		
 		for ( int j = 0; j < group_min_sizes[i]; j++ )
 		{
 			if ( rcl.size() > 0 )
@@ -116,7 +116,7 @@ std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vec
 			}
 		}
 	}
-	std::cout << "TESTE 2\n";
+	
 	for ( int i = 0; i < num_groups; i++ )
 	{
 		// conta o numero de pessoas no grupo
@@ -204,8 +204,10 @@ std::vector<int> build_restricted_candidate_list( int k, Graph instance, std::ve
 	nodes_si.clear();
 	
 	for ( int i = 0; i < num_nodes; i++ )		// O(n)
+	{
 		nodes[i] = i;
-	
+	}
+		
 	for ( int i = 0; i < num_nodes; i++ )
 	{
 		if ( available_nodes[i] )
@@ -223,7 +225,7 @@ std::vector<int> build_restricted_candidate_list( int k, Graph instance, std::ve
 			
 			std::sort( nodes.begin(), nodes.end(), []( int node_a, int node_b ){ return diversities[node_a] >= diversities[node_b]; });
 			std::vector<int> top_k_diversities;
-				
+			
 			// seleciona os k nodos com maior diversidade de i
 			for ( int j = 0; j < k; j++ )
 				top_k_diversities.push_back( diversities[nodes[j]] );
@@ -232,7 +234,6 @@ std::vector<int> build_restricted_candidate_list( int k, Graph instance, std::ve
 			int si = 0;
 			for ( int j = 0; j < k; j++ )
 				si += top_k_diversities[j];
-			
 			nodes_si.push_back( si );
 		}
 		else
