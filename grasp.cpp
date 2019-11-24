@@ -223,8 +223,11 @@ std::vector<int> build_restricted_candidate_list( int k, Graph instance, std::ve
 					diversities[j] = 0;
 			}
 			
+			std::cout << 'b';
 			std::sort( nodes.begin(), nodes.end(), []( int node_a, int node_b ){ return diversities[node_a] >= diversities[node_b]; });
-			std::vector<int> top_k_diversities;
+			
+			std::cout << 'a';
+			std::vector<float> top_k_diversities;
 			
 			// seleciona os k nodos com maior diversidade de i
 			for ( int j = 0; j < k; j++ )
