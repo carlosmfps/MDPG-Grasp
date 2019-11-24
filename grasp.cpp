@@ -10,6 +10,7 @@ int grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> group
 	int num_nodes = graph.size();
 	std::vector<bool> available_nodes( num_nodes, true );
 
+	// fase de construcao - nao garante que a solucao factivel seja localmente otima
 	std::vector< std::vector<int> > solution = build_initial_solution( graph, available_nodes, group_min_sizes );
 	std::cout << std::endl << "solucao inicial:" << std::endl;
 	print_solution( solution );
@@ -18,7 +19,6 @@ int grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> group
 	for ( int i = 0; i < MAX_ITERATIONS; i++ )
 	{
 		std::vector< std::vector<int> > neighbor;
-		neighbor = build_neighbor( graph, group_min_sizes, group_max_sizes, solution );
 		
 		
 	}
@@ -81,9 +81,40 @@ std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vec
 	return solution;
 }
 
-std::vector< std::vector<int> > build_neighbor( Graph instance, std::vector<int> group_min_sizes, std::vector<int> group_max_sizes, std::vector< std::vector<int> > solution )
+int find_person_p_group( std::vector< std::vector<int> > solution, int p )
 {
+	for ( int i = 0; i < solution.size(); i++ )
+	{
+		if ( solution[i][p] == 1 )
+			return i;
+	}
 	
+	return -1;
+}
+
+std::vector< std::vector<int> > build_neighbor( int person_a, int person_b, std::vector< std::vector<int> > solution )
+{
+	std::vector< std::vector<int> > neighbor = solution;
+	int num_groups = solution.size();
+	int person_a_group, person_b_group;
+	
+	// encontra os grupos de cada pessoa
+	for ( int i = 0; i < num_groups; i++ )
+	{
+		if ( solution[i][person_a] == 1 )
+			person_a_group = i;
+		if ( solution[i][person_b] == 1 )
+			person_b_group = i;
+	}
+
+	// troca os grupos
+	neighbor[person_a_group][person_a] = 0;
+	neighbor[person_b_group][person_a] = 1;
+	
+	neighbor[person_b_group][person_b] = 0;
+	neighbor[person_a_group][person_b] = 1;
+	
+	return neighbor;
 }
 
 void print_solution( std::vector< std::vector<int> > solution )
@@ -98,6 +129,7 @@ void print_solution( std::vector< std::vector<int> > solution )
 
 std::vector<int> build_restricted_candidate_list( int k, Graph instance, std::vector<bool>& available_nodes )
 {
+	// utiliza um algoritmo guloso para estimar o ganho de incluir uma pessoa em um grupo na solucao
 	int num_nodes = instance.size();
 	int num_available_nodes = 0;
 	

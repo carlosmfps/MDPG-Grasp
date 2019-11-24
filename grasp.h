@@ -18,7 +18,9 @@ int calculate_z( std::vector< std::vector<int> > solution, Graph instance, int n
 
 std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vector<bool>& available_nodes, std::vector<int> group_min_sizes );
 
-std::vector< std::vector<int> > build_neighbor( Graph instance, std::vector<int> group_min_sizes, std::vector<int> group_max_sizes, std::vector< std::vector<int> > solution );
+int find_person_p_group( std::vector< std::vector<int> > solution, int p );
+
+std::vector< std::vector<int> > build_neighbor( int person_a, int person_b, std::vector< std::vector<int> > solution );
 
 void print_solution( std::vector< std::vector<int> > solution );
 
