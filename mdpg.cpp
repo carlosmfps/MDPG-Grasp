@@ -58,8 +58,10 @@ int main()
 	
 	graph = read_graph();
 	read_group_sizes( group_min_sizes, group_max_sizes );
+
 	best_solution = grasp( graph, group_min_sizes, group_max_sizes );
-	std::cout << "melhor solucao encontrada: " << best_solution << std::endl;
+
+	std::cout << std::endl << "melhor solucao encontrada: " << best_solution << std::endl;
 	
 	return 0;
 }
