@@ -1,68 +1,57 @@
 #include <iostream>
 #include <vector>
+#include <iostream>     
+#include <fstream>      
 #include "grasp.h"
 
-std::vector< std::vector<int> > read_graph()
-{
+int main(int argc, char *argv[])
+{	
+	srand(atoi(argv[2]) );
+	std::ifstream input;
+	input.open(argv[1]);
+	std::string tipo_arq;
+	float best_solution;
 	std::vector< std::vector<int> > graph;
-	int num_vertex, num_arch;
+	std::vector<int> group_min_sizes, group_max_sizes;
+	int num_vertex, num_arch, num_groups;
 	
-	std::cout << std::endl << "informe o numero de pessoas:" << std::endl << "> ";
-	std::cin >> num_vertex;
+	//recebe o numero de pessoas
+	input >> num_vertex;
+	//recebe o numero de grupos
+	input >> num_groups;
+	input >> tipo_arq;
 	num_arch = ( ( num_vertex * num_vertex ) - num_vertex ) / 2;
-	
-	// inicializa grafo preenchido com 0
-	std::vector<int> column( num_vertex );
-	std::fill( column.begin(), column.end(), 0 );
-	for ( int i = 0; i < num_vertex; i++ )		// O(n)
-		graph.push_back( column );
 
-	// le arestas
-	std::cout << std::endl << "informe 3 valores para cada par de pessoas - pessoa a, pessoa b e a diversidade entre elas:" << std::endl;
-	for ( int i = 0; i < num_arch; i++ )			// O(n^2)
-	{
-		int a, b, diversity;
-		std::cout << "> ";
-		std::cin >> a >> b >> diversity;
-		graph[a][b] = graph[b][a] = diversity;
-	}
 	
-	return graph;
-}
-
-void read_group_sizes( std::vector<int>& group_min_sizes, std::vector<int>& group_max_sizes )
-{
-	int num_groups;
-		
-	std::cout << std::endl << "informe o numero de grupos:" << std::endl << "> ";
-	std::cin >> num_groups;
 	
-	std::cout << std::endl << "informe 2 valores para cada grupo - o tamanho minimo e o tamanho maximo de cada um:" << std::endl;
+	//preenche os vetores de limites de listas
 	for ( int i = 0; i < num_groups; i++ )		// O(m)
 	{
 		int min, max;
-		std::cout << "> ";
-		std::cin >> min >> max;
-		
+		input >> min >> max;
 		group_min_sizes.push_back( min );
 		group_max_sizes.push_back( max );
 	}
-}
-
-
-int main()
-{
-	srand( time( NULL ) );
+	// inicializa grafo preenchido com 0
+	std::vector<int> column( num_vertex );
+	std::fill( column.begin(), column.end(), 0 );
+	for ( int i = 0; i < num_vertex; i++ ){		// O(n)
+		graph.push_back( column );
+	}
+		
+	// le arestas
+	for ( int i = 0; i < num_arch; i++ )			// O(n^2)
+	{
+		int a, b, diversity;
+		input >> a >> b >> diversity;
+		graph[a][b] = diversity;
+		graph[b][a] = diversity;
+	}
 	
-	int best_solution;
-	std::vector< std::vector<int> > graph;
-	std::vector<int> group_min_sizes, group_max_sizes;
+	input.close();
 	
-	graph = read_graph();
-	read_group_sizes( group_min_sizes, group_max_sizes );
-
 	best_solution = grasp( graph, group_min_sizes, group_max_sizes );
-
+	
 	std::cout << std::endl << "melhor solucao encontrada: " << best_solution << std::endl;
 	
 	return 0;

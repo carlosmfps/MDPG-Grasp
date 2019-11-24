@@ -23,8 +23,7 @@ int grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> group
 
 		for( int j = 0; j< MAX_NEIGHBOR; j++ )
 		{
-			std::vector< std::vector<int> > neighbor;
-			
+			std::vector< std::vector<int> > neighbor;			
 			do
 			{
 				person_a = rand() % num_nodes;
