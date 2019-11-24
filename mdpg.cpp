@@ -6,12 +6,14 @@
 
 int main(int argc, char *argv[])
 {	
+	clock_t begin = clock();
+
 	srand(atoi(argv[2]) );
 	std::ifstream input;
 	input.open(argv[1]);
 	std::string tipo_arq;
 	float best_solution;
-	std::vector< std::vector<int> > graph;
+	Graph graph;
 	std::vector<int> group_min_sizes, group_max_sizes;
 	int num_vertex, num_arch, num_groups;
 	
@@ -31,7 +33,7 @@ int main(int argc, char *argv[])
 		group_max_sizes.push_back( max );
 	}
 	// inicializa grafo preenchido com 0
-	std::vector<int> column( num_vertex );
+	std::vector<float> column( num_vertex );
 	std::fill( column.begin(), column.end(), 0 );
 	for ( int i = 0; i < num_vertex; i++ ){		// O(n)
 		graph.push_back( column );
@@ -51,6 +53,10 @@ int main(int argc, char *argv[])
 	best_solution = grasp( graph, group_min_sizes, group_max_sizes );
 	
 	std::cout << std::endl << "melhor solucao encontrada: " << best_solution << std::endl;
+	
+	clock_t end = clock();
+	double elapsed_seconds = double( end - begin ) / CLOCKS_PER_SEC;
+	std::cout << std::endl << "tempo de execucao em segundos: " << elapsed_seconds << std::endl;
 	
 	return 0;
 }
