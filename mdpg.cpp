@@ -21,8 +21,6 @@ int main(int argc, char *argv[])
 	input >> num_groups;
 	input >> tipo_arq;
 	num_arch = ( ( num_vertex * num_vertex ) - num_vertex ) / 2;
-
-	
 	
 	//preenche os vetores de limites de listas
 	for ( int i = 0; i < num_groups; i++ )		// O(m)

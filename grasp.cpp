@@ -116,8 +116,8 @@ std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vec
 			// coloca os nodos que sobraram em grupos que ainda tem espaço
 			int k = group_max_sizes[i] - n_people;
 			std::vector<int> rcl = build_restricted_candidate_list( k, instance, available_nodes );
-			
-			for ( int j = 0; j < k; j++ )
+
+			for ( int j = 0; j < rcl.size(); j++ )
 			{
 				solution[i][rcl[j]] = 1;
 				available_nodes[rcl[j]] = false;
