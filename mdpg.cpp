@@ -34,6 +34,8 @@ void read_group_sizes( std::vector<int>& group_min_sizes, std::vector<int>& grou
 {
 	int num_groups;
 	
+	srand( time( NULL ) );
+	
 	std::cout << std::endl << "informe o numero de grupos:" << std::endl << "> ";
 	std::cin >> num_groups;
 	

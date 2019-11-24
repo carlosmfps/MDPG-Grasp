@@ -4,8 +4,10 @@
 #include <algorithm>
 #include <vector>
 #include <climits>
+#include <time.h>
 
 #define MAX_ITERATIONS 20
+#define MAX_NEIGHBOR 20
 
 typedef std::vector< std::vector<int> > Graph;
 
@@ -16,7 +18,7 @@ int grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> group
 
 int calculate_z( std::vector< std::vector<int> > solution, Graph instance, int num_groups, int num_nodes );
 
-std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vector<bool>& available_nodes, std::vector<int> group_min_sizes );
+std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vector<bool>& available_nodes, std::vector<int> group_min_sizes, std::vector<int> group_max_sizes );
 
 int find_person_p_group( std::vector< std::vector<int> > solution, int p );
 

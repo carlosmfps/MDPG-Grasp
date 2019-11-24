@@ -8,19 +8,43 @@ int grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> group
 	int best_cost_solution = 0;
 	int num_groups = group_max_sizes.size();
 	int num_nodes = graph.size();
+	int person_a, person_b, a_group, b_group;
 	std::vector<bool> available_nodes( num_nodes, true );
 
 	// fase de construcao - nao garante que a solucao factivel seja localmente otima
-	std::vector< std::vector<int> > solution = build_initial_solution( graph, available_nodes, group_min_sizes );
+	std::vector< std::vector<int> > solution = build_initial_solution( graph, available_nodes, group_min_sizes, group_max_sizes );
 	std::cout << std::endl << "solucao inicial:" << std::endl;
 	print_solution( solution );
 		
 	// busca local
 	for ( int i = 0; i < MAX_ITERATIONS; i++ )
-	{
-		std::vector< std::vector<int> > neighbor;
+	{	
+		std::vector< std::vector<int> > best_local_solution = solution;
 		
-		
+		for( int j = 0; j< MAX_NEIGHBOR; j++ )
+		{
+			std::vector< std::vector<int> > neighbor;
+			
+			do
+			{
+				person_a = rand() % num_nodes;
+				person_b = rand() % num_nodes;
+				
+				a_group = find_person_p_group( best_local_solution, person_a );
+				b_group = find_person_p_group( best_local_solution, person_b );
+			} while ( a_group == -1 || b_group == -1 || person_a == person_b );			
+			
+			neighbor = build_neighbor(  person_a, person_b, solution  );
+			
+			int this_z = calculate_z( best_local_solution, graph, num_groups, num_nodes );
+			int neighbor_z = calculate_z( neighbor, graph, num_groups, num_nodes );
+			
+			if( this_z < neighbor_z )
+			{
+				best_local_solution = neighbor;
+			}
+		}
+		solution = best_local_solution;
 	}
 
 	return calculate_z( solution, graph, num_groups, num_nodes );
@@ -52,7 +76,7 @@ int calculate_z( std::vector< std::vector<int> > solution, Graph instance, int n
 	return z;
 }
 
-std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vector<bool>& available_nodes, std::vector<int> group_min_sizes )
+std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vector<bool>& available_nodes, std::vector<int> group_min_sizes, std::vector<int> group_max_sizes )
 {
 	std::vector< std::vector<int> > solution;
 	int num_groups = group_min_sizes.size();
@@ -75,6 +99,30 @@ std::vector< std::vector<int> > build_initial_solution( Graph instance, std::vec
 		{
 			solution[i][rcl[j]] = 1;
 			available_nodes[rcl[j]] = false;
+		}
+	}
+	
+	for ( int i = 0; i < num_groups; i++ )
+	{
+		// conta o numero de pessoas no grupo
+		int n_people = 0;
+		for ( int j = 0; j < num_nodes; j++ )
+		{
+			if ( solution[i][j] == 1 )
+				n_people++;
+		}
+		
+		if ( n_people < group_max_sizes[i] )
+		{
+			// coloca os nodos que sobraram em grupos que ainda tem espaço
+			int k = group_max_sizes[i] - n_people;
+			std::vector<int> rcl = build_restricted_candidate_list( k, instance, available_nodes );
+			
+			for ( int j = 0; j < k; j++ )
+			{
+				solution[i][rcl[j]] = 1;
+				available_nodes[rcl[j]] = false;
+			}
 		}
 	}
 	
