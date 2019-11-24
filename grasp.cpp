@@ -36,8 +36,8 @@ float grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> gro
 			
 			neighbor = build_neighbor(  person_a, person_b, solution  );
 			
-			int this_z = calculate_z( best_local_solution, graph, num_groups, num_nodes );
-			int neighbor_z = calculate_z( neighbor, graph, num_groups, num_nodes );
+			float this_z = calculate_z( best_local_solution, graph, num_groups, num_nodes );
+			float neighbor_z = calculate_z( neighbor, graph, num_groups, num_nodes );
 			
 			if( this_z < neighbor_z )
 			{
@@ -60,15 +60,15 @@ float grasp( Graph graph, std::vector<int> group_min_sizes, std::vector<int> gro
 
 float calculate_z( std::vector< std::vector<int> > solution, Graph instance, int num_groups, int num_nodes )
 {
-	int z = 0;
+	float z = 0;
 	for ( int group = 0; group < num_groups; group++ )		// O( m*n^2 ) -> O(n^3)
 	{
-		int group_diversity = 0;
+		float group_diversity = 0;
 		for ( int person_a = 0; person_a < num_nodes; person_a++ )					// calcula a diversidade de cada grupo
 		{
 			if ( solution[group][person_a] == 1 )
 			{
-				int individual_diversity = 0;
+				float individual_diversity = 0;
 				for ( int person_b = person_a; person_b < num_nodes; person_b++ )
 				{
 					if ( solution[group][person_b] == 1 )
